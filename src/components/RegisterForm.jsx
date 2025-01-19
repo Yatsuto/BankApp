@@ -78,7 +78,7 @@ const RegisterForm = ({}) => {
                     <div style={{position: 'relative', left: -115, top: -180}}>
                     <input type="checkbox"/>
                     </div>
-                    <h2 style={{position: 'relative', left: 5, top: -202, fontSize: '0.8rem'}}>
+                    <h2 style={{position: 'relative', left: -5, top: -202, fontSize: '0.8rem'}}>
                         I agree to the terms & conditions
                     </h2>
 
