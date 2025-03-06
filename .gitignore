@@ -7,18 +7,48 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Build output
+dist/
+dist-ssr/
+out/
+.next/   # If using Next.js
+.vite/   # If using Vite
+
+# Local environment files
+.env
+.env.local
+.env.*.local
 
 # Editor directories and files
-.vscode/*
+.vscode/
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# Azure / Docker / Server Deployment
+.Dockerfile
+.dockerignore
+terraform.tfstate
+terraform.tfstate.backup
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
