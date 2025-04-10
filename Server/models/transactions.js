@@ -5,7 +5,7 @@ import Account from './account.js'; // ✅ Import Account model
 const Transaction = sequelize.define('transaction', {
   from_account_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   to_account_id: {
     type: DataTypes.INTEGER,

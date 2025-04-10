@@ -7,6 +7,7 @@ import landingPage from "./components/LandingPage.jsx";
 import BankDashboard from './components/LandingPage.jsx';
 import TransactionPage from './components/TransactionPage.jsx';
 import TransferPage from './components/TransferPage.jsx';
+import DepositPage from './components/DepositPage.jsx';
 
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
       }}
     >
 
-      <TransactionPage accountId={2}/>
+      <TransactionPage accountId={3}/>
 
       {/*<Header></Header>
       <Box>
