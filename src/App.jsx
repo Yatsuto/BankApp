@@ -8,6 +8,7 @@ import BankDashboard from './components/LandingPage.jsx';
 import TransactionPage from './components/TransactionPage.jsx';
 import TransferPage from './components/TransferPage.jsx';
 import DepositPage from './components/DepositPage.jsx';
+import WithdrawPage from './components/withdrawPage.jsx';
 
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
       }}
     >
 
-      <TransactionPage accountId={3}/>
+      <WithdrawPage userId={1}/>
 
       {/*<Header></Header>
       <Box>

@@ -9,7 +9,7 @@ const Transaction = sequelize.define('transaction', {
   },
   to_account_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   amount: {
     type: DataTypes.DECIMAL(10, 2),
