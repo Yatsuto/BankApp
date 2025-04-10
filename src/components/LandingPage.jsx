@@ -116,20 +116,26 @@ const BankDashboard = () => {
       {/* Manage Accounts */}
       {/* Manage Accounts */}
       <section className="flex flex-col items-center mt-12">
-  <div className="border border-white/20 rounded-xl p-6 w-full max-w-md text-center backdrop-blur-md bg-white/5">
-    <h2 className="text-xl mb-6 font-semibold text-white">Manage Accounts</h2>
+      <div className="border border-white/20 rounded-xl p-6 w-full max-w-md text-center backdrop-blur-md bg-white/5">
+  <h2 className="text-xl mb-6 font-semibold text-white">Manage Accounts</h2>
 
-    <div className="grid grid-cols-2 gap-4">
-      {['Zelle', 'Transfer', 'Deposit', 'Withdraw'].map((label, idx) => (
-        <button
-          key={idx}
-          className="bg-gradient-to-b from-gray-800 to-gray-900 text-white px-4 py-2 rounded-lg font-medium border border-white/10 hover:from-gray-700 hover:to-gray-800 hover:border-white/30 active:scale-95 transition-all duration-200"
-        >
-          {label}
-        </button>
-      ))}
-    </div>
+  <div className="grid grid-cols-2 gap-4 mb-4">
+    {['Zelle', 'Transfer', 'Deposit', 'Withdraw'].map((label, idx) => (
+      <button
+        key={idx}
+        className="bg-gradient-to-b from-gray-800 to-gray-900 text-white px-4 py-2 rounded-lg font-medium border border-white/10 hover:from-gray-700 hover:to-gray-800 hover:border-white/30 active:scale-95 transition-all duration-200"
+      >
+        {label}
+      </button>
+    ))}
   </div>
+
+  {/* Just a visible link, no routing needed */}
+  <a href="#" className="text-blue-400 hover:underline text-sm">
+    Open a New Account
+  </a>
+</div>
+
 </section>
 
 

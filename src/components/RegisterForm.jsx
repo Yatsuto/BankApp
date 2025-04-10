@@ -6,6 +6,8 @@ import React, { useState, useEffect } from 'react';
 const RegisterForm = ({}) => {
 
     const [leftPosition, setLeftPosition] = useState(0); 
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     useEffect(() => {
       const handleComponentMovement = (event) => {
@@ -28,6 +30,33 @@ const RegisterForm = ({}) => {
         // Dispatch an event to notify Component1
         window.dispatchEvent(new CustomEvent('moveComponents', { detail: { direction: 'right' } })); 
       };
+    
+      const handleRegister = async () => {
+        try {
+          const res = await fetch('https://localhost:3000/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: username,
+              password,
+              first_name: "John",
+              last_name: "Doe",
+              ssn: "123-45-6789"
+            })
+          });
+      
+          const data = await res.json();
+          if (res.ok) {
+            alert('✅ User registered successfully!');
+          } else {
+            alert(`❌ Error: ${data.error}`);
+          }
+        } catch (err) {
+          console.error(err);
+          alert('🚨 Failed to register');
+        }
+      };
+      
 
     return(
 
@@ -42,6 +71,8 @@ const RegisterForm = ({}) => {
                         type="Username" 
                         id="Username" 
                         placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         style={{
                         width: "250px",
                         padding: "10px",
@@ -61,6 +92,8 @@ const RegisterForm = ({}) => {
                         type="Password" 
                         id="Password" 
                         placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         style={{
                         width: "250px",
                         padding: "10px",
@@ -84,7 +117,7 @@ const RegisterForm = ({}) => {
 
                     <button
                         id="Register" 
-                
+                        onClick={handleRegister}
                         style={{
                         width: "250px",
                         padding: "10px",

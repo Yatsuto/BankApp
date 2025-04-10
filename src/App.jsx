@@ -6,6 +6,7 @@ import RegisterForm from "./components/RegisterForm.jsx";
 import landingPage from "./components/LandingPage.jsx";
 import LandingPage from './components/LandingPage.jsx';
 import TransactionPage from './components/TransactionPage.jsx';
+import TransferPage from './components/TransferPage.jsx';
 
 
 function App() {
@@ -24,17 +25,14 @@ function App() {
         zIndex: -1,
       }}
     >
-      <TransactionPage
-        account={{ type: 'Checking', last4: '1234', balance: 3245.12 }}
-        onBack={() => console.log('Back clicked')}
-      />
+
  
 
-      {/*<Header></Header>
+      /*<Header></Header>
       <Box>
         <Loginform></Loginform>
         <RegisterForm></RegisterForm>
-      </Box>*/}
+      </Box>*/
 
     </div>
   );
