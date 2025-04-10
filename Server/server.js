@@ -1,34 +1,39 @@
 import express from 'express';
-import {connectDB, closeDB} from './utils/db_related.js'
 import dotenv from 'dotenv';
+import { connectDB, closeDB } from './utils/db_related.js';
+import accountRoutes from './routes/accountRoutes.js';
+import cors from 'cors';
+
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Middleware
+app.use(cors({
+    origin: 'http://localhost:5173',
+  }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
 app.get('/', (req, res) => {
-    res.send('Bank API is running with Sequelize...');
+  res.send('Bank API is running with Sequelize...');
 });
 
+// ✅ Use the modular routes
+app.use('/api/accounts', accountRoutes);
+
 process.on('SIGINT', async () => {
-    await closeDB();
-    process.exit(0);
+  await closeDB();
+  process.exit(0);
 });
 
 process.on('SIGTERM', async () => {
-    await closeDB();
-    process.exit(0);
+  await closeDB();
+  process.exit(0);
 });
 
-
-// Start Server
 app.listen(PORT, () => {
-    console.log(`✅ Server running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });

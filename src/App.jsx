@@ -4,7 +4,7 @@ import Box from "./components/Box.jsx";
 import Loginform from "./components/LoginForm.jsx";
 import RegisterForm from "./components/RegisterForm.jsx";
 import landingPage from "./components/LandingPage.jsx";
-import LandingPage from './components/LandingPage.jsx';
+import BankDashboard from './components/LandingPage.jsx';
 import TransactionPage from './components/TransactionPage.jsx';
 import TransferPage from './components/TransferPage.jsx';
 
@@ -26,13 +26,13 @@ function App() {
       }}
     >
 
- 
+      <TransactionPage accountId={2}/>
 
-      /*<Header></Header>
+      {/*<Header></Header>
       <Box>
         <Loginform></Loginform>
         <RegisterForm></RegisterForm>
-      </Box>*/
+      </Box>*/}
 
     </div>
   );

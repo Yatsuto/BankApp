@@ -1,26 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const TransferMoney = () => {
-  const accounts = [
-    { type: 'Checking', last4: '1234' },
-    { type: 'Savings', last4: '5678' },
-  ];
-
-  const [fromAccount, setFromAccount] = useState('');
-  const [toAccount, setToAccount] = useState('');
+const TransferMoney = ({ userId }) => {
+  const [accounts, setAccounts] = useState([]);
+  const [fromAccountId, setFromAccountId] = useState('');
+  const [toAccountId, setToAccountId] = useState('');
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
 
-  const handleTransfer = () => {
-    if (!fromAccount || !toAccount || !amount || fromAccount === toAccount) {
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/accounts/${userId}`);
+        if (!response.ok) throw new Error('Failed to load accounts');
+        const data = await response.json();
+        setAccounts(data);
+      } catch (err) {
+        console.error('❌ Error loading accounts:', err);
+        alert('Failed to load accounts.');
+      }
+    };
+
+    if (userId) fetchAccounts();
+  }, [userId]);
+
+  const handleTransfer = async () => {
+    if (!fromAccountId || !toAccountId || !amount || fromAccountId === toAccountId) {
       alert('Please complete all fields and make sure the accounts are different.');
       return;
     }
 
-    console.log(`Transferring $${amount} from ${fromAccount} to ${toAccount}. Note: ${note}`);
-    // Here you'd trigger your actual transfer logic or API call
-    alert(`Transfer of $${amount} from ${fromAccount} to ${toAccount} initiated.`);
+    try {
+      const response = await fetch('http://localhost:3000/api/accounts/transfer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          from_account_id: fromAccountId,
+          to_account_id: toAccountId,
+          amount,
+          note,
+        }),
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(errText || 'Transfer failed');
+      }
+
+      alert(`Transfer of $${amount} successful!`);
+      setAmount('');
+      setNote('');
+      setFromAccountId('');
+      setToAccountId('');
+    } catch (err) {
+      console.error('❌ Transfer failed:', err.message);
+      alert(`Transfer failed: ${err.message}`);
+    }
   };
+
+  // Filter for "From" dropdown (Checking or Savings)
+  const eligibleFromAccounts = accounts.filter(acc =>
+    ['Checking', 'Savings'].includes(acc.account_type)
+  );
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white/5 backdrop-blur-md rounded-lg text-white border border-white/10 mt-10">
@@ -29,14 +70,14 @@ const TransferMoney = () => {
       <label className="block mb-4">
         <span className="block mb-2">From Account</span>
         <select
-          value={fromAccount}
-          onChange={(e) => setFromAccount(e.target.value)}
+          value={fromAccountId}
+          onChange={(e) => setFromAccountId(e.target.value)}
           className="w-full p-2 rounded bg-gray-900 border border-white/10"
         >
           <option value="">Select account</option>
-          {accounts.map((acc, idx) => (
-            <option key={idx} value={`${acc.type} ••••${acc.last4}`}>
-              {acc.type} ••••{acc.last4}
+          {eligibleFromAccounts.map((acc) => (
+            <option key={acc.id} value={acc.id}>
+              {acc.account_type} ••••{acc.account_number.slice(-4)}
             </option>
           ))}
         </select>
@@ -45,14 +86,14 @@ const TransferMoney = () => {
       <label className="block mb-4">
         <span className="block mb-2">To Account</span>
         <select
-          value={toAccount}
-          onChange={(e) => setToAccount(e.target.value)}
+          value={toAccountId}
+          onChange={(e) => setToAccountId(e.target.value)}
           className="w-full p-2 rounded bg-gray-900 border border-white/10"
         >
           <option value="">Select account</option>
-          {accounts.map((acc, idx) => (
-            <option key={idx} value={`${acc.type} ••••${acc.last4}`}>
-              {acc.type} ••••{acc.last4}
+          {accounts.map((acc) => (
+            <option key={acc.id} value={acc.id}>
+              {acc.account_type} ••••{acc.account_number.slice(-4)}
             </option>
           ))}
         </select>

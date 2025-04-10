@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@ionic/react": "^8.4.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "gh-pages": "^6.3.0",
