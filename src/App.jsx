@@ -26,13 +26,13 @@ function App() {
       }}
     >
 
-      <TransactionPage accountId={2}/>
+      {/* <TransactionPage accountId={2}/> */}
 
-      {/*<Header></Header>
+      <Header></Header>
       <Box>
         <Loginform></Loginform>
         <RegisterForm></RegisterForm>
-      </Box>*/}
+      </Box>
 
     </div>
   );

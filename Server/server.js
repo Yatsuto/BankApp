@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB, closeDB } from './utils/db_related.js';
 import accountRoutes from './routes/accountRoutes.js';
+import authRoutes from './routes/authentication.js';
 import cors from 'cors';
 
 
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 
 // ✅ Use the modular routes
 app.use('/api/accounts', accountRoutes);
+app.use('/api/auth', authRoutes);
 
 process.on('SIGINT', async () => {
   await closeDB();

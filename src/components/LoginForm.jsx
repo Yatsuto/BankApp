@@ -5,7 +5,9 @@ import React, { useState, useEffect } from 'react';
 
 const LoginForm = () => {
 
-    const [leftPosition, setLeftPosition] = useState(0); 
+    const [leftPosition, setLeftPosition] = useState(0);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState(''); 
     
     useEffect(() => {
       const handleComponentMovement = (event) => {
@@ -27,6 +29,30 @@ const LoginForm = () => {
     window.dispatchEvent(new CustomEvent('moveComponents', { detail: { direction: 'left' } })); 
   
     };
+
+    const handleLogin = async () => {
+        try {
+            const res = await fetch('http://localhost:3000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: username,
+                    password
+                })
+            });
+            
+            const data = await res.json();
+            if (res.ok) {
+                alert('Login successful!');
+                // and redirect to a dashboard or home page
+            } else {
+                alert(`Error: ${data.error}`);
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Failed to login');
+        }
+    };
  
     return(
 
@@ -39,6 +65,8 @@ const LoginForm = () => {
                     type="Username" 
                     id="Username" 
                     placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     style={{
                     width: "250px",
                     padding: "10px",
@@ -59,6 +87,8 @@ const LoginForm = () => {
                     type="Password" 
                     id="Password" 
                     placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     style={{
                     width: "250px",
                     padding: "10px",
@@ -86,7 +116,7 @@ const LoginForm = () => {
 
                 <button
                     id="Login" 
-                
+                    onClick={handleLogin}
                     style={{
                     width: "250px",
                     padding: "10px",
