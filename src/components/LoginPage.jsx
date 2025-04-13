@@ -1,9 +1,36 @@
-import React from 'react';
+import { useState } from 'react';
 import { IonIcon } from '@ionic/react';
 import { personOutline, lockClosedOutline } from 'ionicons/icons';
 import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Login successful!");
+        // and redirect to a dashboard or home page
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to login");
+    }
+  };
+
   return (
     <>
       <header style={{ textAlign: 'center', marginTop: '6rem', color: 'white' }}>
@@ -34,8 +61,10 @@ const LoginPage = () => {
         <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
           <IonIcon icon={personOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
           <input
-            type="text"
-            placeholder="Username"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             style={{
               width: "100%",
               padding: "10px 40px 10px 10px",
@@ -53,6 +82,8 @@ const LoginPage = () => {
           <input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             style={{
               width: "100%",
               padding: "10px 40px 10px 10px",
@@ -73,21 +104,23 @@ const LoginPage = () => {
           <a href="#" style={{ color: 'white', textDecoration: 'underline' }}>Forgot Password?</a>
         </div>
 
-        <button style={{
-          width: "100%",
-          padding: "10px",
-          border: "none",
-          borderRadius: "20px",
-          backgroundColor: "white",
-          color: "black",
-          fontWeight: "bold",
-          cursor: "pointer"
-        }}>
+        <button 
+          onClick={handleLogin}
+          style={{
+            width: "100%",
+            padding: "10px",
+            border: "none",
+            borderRadius: "20px",
+            backgroundColor: "white",
+            color: "black",
+            fontWeight: "bold",
+            cursor: "pointer"
+          }}>
           Login
         </button>
 
         <div style={{ marginTop: '1rem', fontSize: '0.8rem' }}>
-        Don’t have an account? <Link to="/register" style={{ color: 'white', textDecoration: 'underline' }}>Register</Link>
+          Don&apos;t have an account? <Link to="/register" style={{ color: 'white', textDecoration: 'underline' }}>Register</Link>
         </div>
       </div>
     </>

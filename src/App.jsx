@@ -26,7 +26,15 @@ function App() {
         }}
       />
       
-      <RegisterPage></RegisterPage>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/dashboard" element={<BankDashboard />} />
+        <Route path="/transactions" element={<TransactionPage />} />
+        <Route path="/transfer" element={<TransferPage />} />
+        <Route path="/deposit" element={<DepositPage />} />
+        <Route path="/withdraw" element={<WithdrawPage />} />
+      </Routes>
     </Router>
   );
 }

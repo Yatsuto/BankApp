@@ -1,36 +1,39 @@
-import React from 'react';
+import { useState } from 'react';
 import { IonIcon } from '@ionic/react';
 import { personOutline, lockClosedOutline } from 'ionicons/icons';
 import { Link } from 'react-router-dom';
 
-
-const handleRegister = async () => {
-  try {
-    const res = await fetch('https://localhost:3000/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: username,
-        password,
-        first_name: "John",
-        last_name: "Doe",
-        ssn: "123-45-6789"
-      })
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      alert('✅ User registered successfully!');
-    } else {
-      alert(`❌ Error: ${data.error}`);
-    }
-  } catch (err) {
-    console.error(err);
-    alert('🚨 Failed to register');
-  }
-};
-
 const RegisterPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  const handleRegister = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+          first_name: firstName,
+          last_name: lastName
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert('✅ User registered successfully!');
+      } else {
+        alert(`❌ Error: ${data.error}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('🚨 Failed to register');
+    }
+  };
+
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
       {/* Header */}
@@ -58,28 +61,52 @@ const RegisterPage = () => {
         boxShadow: "0 0 30px rgba(0, 0, 0, 0.5)",
         color: "white"
       }}>
-        <h2 style={{ marginBottom: '1rem' }}>Registeration</h2>
+        <h2 style={{ marginBottom: '1rem' }}>Registration</h2>
 
         {/* First Name */}
         <div style={{ width: '100%', marginBottom: '1rem' }}>
-          <input type="text" placeholder="First Name" style={inputStyle} />
+          <input 
+            type="text" 
+            placeholder="First Name" 
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            style={inputStyle} 
+          />
         </div>
 
         {/* Last Name */}
         <div style={{ width: '100%', marginBottom: '1rem' }}>
-          <input type="text" placeholder="Last Name" style={inputStyle} />
+          <input 
+            type="text" 
+            placeholder="Last Name" 
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            style={inputStyle} 
+          />
         </div>
 
-        {/* Username */}
+        {/* Email */}
         <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
            <IonIcon icon={personOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
-          <input type="text" placeholder="Username" style={inputWithIconStyle} />
+          <input 
+            type="email" 
+            placeholder="Email" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={inputWithIconStyle} 
+          />
         </div>
 
         {/* Password */}
         <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
           <IonIcon icon={lockClosedOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
-          <input type="password" placeholder="Password" style={inputWithIconStyle} />
+          <input 
+            type="password" 
+            placeholder="Password" 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={inputWithIconStyle} 
+          />
         </div>
 
         {/* Checkbox */}
@@ -91,7 +118,7 @@ const RegisterPage = () => {
         </div>
 
         {/* Register Button */}
-        <button style={buttonStyle}>Register</button>
+        <button onClick={handleRegister} style={buttonStyle}>Register</button>
 
         {/* Footer */}
         <div style={{ marginTop: '1rem', fontSize: '0.8rem' }}>
@@ -116,13 +143,6 @@ const inputStyle = {
 const inputWithIconStyle = {
   ...inputStyle,
   paddingRight: "40px"
-};
-
-const iconStyle = {
-  position: 'absolute',
-  top: '10px',
-  right: '15px',
-  color: 'white'
 };
 
 const buttonStyle = {
