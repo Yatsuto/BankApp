@@ -36,7 +36,12 @@ export const transferMoney = async (req, res) => {
     // Perform transfer (inside a transaction for safety)
     await sequelize.transaction(async (t) => {
       fromAccount.balance = parseFloat(fromAccount.balance) - amountNum;
-      toAccount.balance = parseFloat(toAccount.balance) + amountNum;
+      if (toAccount.account_type.toLowerCase() === 'credit') {
+        toAccount.balance = parseFloat(toAccount.balance) - parseFloat(amount);
+      } else {
+        toAccount.balance = parseFloat(toAccount.balance) + parseFloat(amount);
+      }
+      
 
       await fromAccount.save({ transaction: t });
       await toAccount.save({ transaction: t });
