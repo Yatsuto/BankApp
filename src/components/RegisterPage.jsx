@@ -65,7 +65,7 @@ const RegisterPage = () => {
         borderRadius: "20px",
         border: "2px solid rgba(255, 255, 255, 0.5)",
         position: "absolute",
-        top: "60%",
+        top: "63%",
         left: "50%",
         transform: "translate(-50%, -50%)",
         display: "flex",
