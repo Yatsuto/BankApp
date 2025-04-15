@@ -9,6 +9,7 @@ import TransferPage from './components/TransferPage.jsx';
 import DepositPage from './components/DepositPage.jsx';
 import WithdrawPage from './components/withdrawPage.jsx';
 import OpenAccountPage from './components/OpenAccountPage.jsx';
+import ZellePage from './components/ZellePage.jsx';
 
 // Optional wrapper for passing userId from route state
 const BankDashboardWrapper = () => {
@@ -46,6 +47,8 @@ function App() {
           <Route path="/open-account" element={<OpenAccountPage />} />
           <Route path="/deposit" element={<DepositPage />} />
           <Route path="/withdraw" element={<WithdrawPage />} />
+          <Route path="/zelle" element={<ZellePage />} />
+
         </Routes>
       </div>
     </Router>

@@ -26,13 +26,12 @@ const BankDashboard = ({ userId: propUserId }) => {
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   useEffect(() => {
+    if (!userId) {
+      navigate('/');
+      return;
+    }
+  
     const fetchAccounts = async () => {
-      if (!userId) {
-        setError('User not logged in');
-        setLoading(false);
-        return;
-      }
-
       try {
         const res = await fetch(`http://localhost:3000/api/accounts/${userId}`);
         if (!res.ok) throw new Error('Failed to fetch accounts');
@@ -45,17 +44,17 @@ const BankDashboard = ({ userId: propUserId }) => {
         setLoading(false);
       }
     };
-
+  
     fetchAccounts();
-  }, [userId]);
+  }, [userId, navigate]);
+  
 
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800 text-white relative">
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-800/80 transform ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 z-50 backdrop-blur-md border-r border-white/10`}
+        className={`fixed top-0 left-0 h-full w-64 bg-gray-800/80 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          } transition-transform duration-300 z-50 backdrop-blur-md border-r border-white/10`}
       >
         {isSidebarOpen && (
           <div
@@ -103,15 +102,25 @@ const BankDashboard = ({ userId: propUserId }) => {
             </button>
             <h1 className="text-3xl font-semibold">Welcome Back</h1>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <button className="p-2 rounded-full hover:bg-white hover:text-black transition">
               <IonIcon icon={settingsOutline} className="text-xl" />
             </button>
             <button className="p-2 rounded-full hover:bg-white hover:text-black transition">
               <IonIcon icon={chatbubblesOutline} className="text-xl" />
             </button>
+            <button
+              onClick={() => {
+                localStorage.removeItem("userId");
+                navigate('/');
+              }}
+              className="text-sm bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-semibold transition"
+            >
+              Logout
+            </button>
           </div>
         </header>
+
 
         {/* Account Info */}
         <section className="mb-10">
