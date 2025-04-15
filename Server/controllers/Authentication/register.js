@@ -20,6 +20,18 @@ export const register = async (req, res) => {
       });
     }
 
+    const isPasswordStrong = (pw) => {
+      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+      return regex.test(pw);
+    };
+    
+    if (!isPasswordStrong(password)) {
+      return res.status(400).json({
+        success: false,
+        error: "Password must be at least 8 characters long and include uppercase, lowercase, and a number"
+      });
+    }
+    
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 

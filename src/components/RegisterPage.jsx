@@ -10,7 +10,18 @@ const RegisterPage = () => {
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
 
+  const validatePassword = (password) => {
+    // At least 8 characters, one uppercase, one lowercase, one number
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    return regex.test(password);
+  };
+
   const handleRegister = async () => {
+    if (!validatePassword(password)) {
+      alert("Password must be at least 8 characters long and include uppercase, lowercase, and a number.");
+      return;
+    }
+
     const payload = {
       email,
       password,
