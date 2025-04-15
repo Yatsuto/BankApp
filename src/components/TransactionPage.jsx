@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const TransactionPage = ({ accountId }) => {
+const TransactionPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { accountId } = location.state || {};
+
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState(null);
 
@@ -18,6 +23,7 @@ const TransactionPage = ({ accountId }) => {
     };
 
     if (accountId) fetchTransactions();
+    else setError('No account selected. Please go back to dashboard.');
   }, [accountId]);
 
   return (
@@ -27,7 +33,15 @@ const TransactionPage = ({ accountId }) => {
     >
       <h1 className="text-3xl font-bold mb-6">Transaction History</h1>
 
-      {error && <p className="text-red-400">{error}</p>}
+      {error && (
+        <div className="text-red-400 mb-4">
+          {error}
+          <br />
+          <button onClick={() => navigate('/dashboard')} className="text-blue-400 underline mt-2 block">
+            ← Return to Dashboard
+          </button>
+        </div>
+      )}
 
       <div className="space-y-4">
         {transactions.map((txn) => {
@@ -50,8 +64,6 @@ const TransactionPage = ({ accountId }) => {
                 <span className="text-xs text-gray-400">
                   {new Date(txn.timestamp).toLocaleString()}
                 </span>
-
-                {/* ✅ Styled badge and amount */}
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-semibold px-2 py-0.5 rounded bg-white/10 border border-white/20">
                     {otherAccount?.account_type}

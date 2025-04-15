@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { IonIcon } from '@ionic/react';
 import {
   settingsOutline,
@@ -14,7 +15,9 @@ import {
   chatboxEllipsesOutline,
 } from 'ionicons/icons';
 
-const BankDashboard = ({ userId }) => {
+const BankDashboard = ({ userId: propUserId }) => {
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState(propUserId || localStorage.getItem("userId"));
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,6 @@ const BankDashboard = ({ userId }) => {
 
   useEffect(() => {
     const fetchAccounts = async () => {
-      console.log('🔄 Fetching accounts for userId:', userId);
       if (!userId) {
         setError('User not logged in');
         setLoading(false);
@@ -88,7 +90,7 @@ const BankDashboard = ({ userId }) => {
         </div>
       </div>
 
-      {/* Content Scroll Area */}
+      {/* Content */}
       <div className="h-full overflow-y-auto p-6 pb-24">
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
@@ -111,29 +113,31 @@ const BankDashboard = ({ userId }) => {
           </div>
         </header>
 
-        {/* Accounts */}
+        {/* Account Info */}
         <section className="mb-10">
           <h2 className="text-xl mb-4">Your Accounts</h2>
           {loading && <p>Loading accounts...</p>}
           {error && <p className="text-red-400">{error}</p>}
 
           <div className="space-y-4">
-            {accounts.map((acc) => (
-              <button
-                key={acc.id}
-                onClick={() => {
-                  setSidebarOpen(false);
-                  console.log(`Navigate to transaction history for ${acc.account_type}`);
-                }}
-                className="w-full text-left bg-white bg-opacity-10 hover:bg-opacity-20 transition p-4 rounded-lg backdrop-blur-md border border-white/20"
-              >
-                <h3 className="text-lg font-medium">{acc.account_type} Account</h3>
-                <p className="text-sm">•••• {acc.account_number.slice(-4)}</p>
-                <p className="text-2xl font-bold mt-2">
-                  ${parseFloat(acc.balance).toFixed(2)}
-                </p>
-              </button>
-            ))}
+            {Array.isArray(accounts) &&
+              accounts.map((acc) => (
+                <button
+                  key={acc.id}
+                  onClick={() => {
+                    navigate("/transactions", { state: { accountId: acc.id } });
+                  }}
+                  className="w-full text-left bg-white bg-opacity-10 hover:bg-opacity-20 transition p-4 rounded-lg backdrop-blur-md border border-white/20"
+                >
+                  <h3 className="text-lg font-medium">{acc.account_type} Account</h3>
+                  <p className="text-sm">
+                    •••• {acc.account_number?.toString().slice(-4) || '----'}
+                  </p>
+                  <p className="text-2xl font-bold mt-2">
+                    ${parseFloat(acc.balance).toFixed(2)}
+                  </p>
+                </button>
+              ))}
           </div>
         </section>
 
@@ -142,18 +146,24 @@ const BankDashboard = ({ userId }) => {
           <div className="border border-white/20 rounded-xl p-6 w-full max-w-md text-center backdrop-blur-md bg-white/5">
             <h2 className="text-xl mb-6 font-semibold text-white">Manage Accounts</h2>
             <div className="grid grid-cols-2 gap-4 mb-4">
-              {['Zelle', 'Transfer', 'Deposit', 'Withdraw'].map((label, idx) => (
+              {[
+                { label: 'Zelle', path: '/zelle' },
+                { label: 'Transfer', path: '/transfer' },
+                { label: 'Deposit', path: '/deposit' },
+                { label: 'Withdraw', path: '/withdraw' },
+              ].map(({ label, path }, idx) => (
                 <button
                   key={idx}
+                  onClick={() => navigate(path)}
                   className="bg-gradient-to-b from-gray-800 to-gray-900 text-white px-4 py-2 rounded-lg font-medium border border-white/10 hover:from-gray-700 hover:to-gray-800 hover:border-white/30 active:scale-95 transition-all duration-200"
                 >
                   {label}
                 </button>
               ))}
             </div>
-            <a href="#" className="text-blue-400 hover:underline text-sm">
+            <Link to="/open-account" className="text-blue-400 hover:underline text-sm">
               Open a New Account
-            </a>
+            </Link>
           </div>
         </section>
       </div>

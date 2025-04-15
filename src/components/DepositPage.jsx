@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-const DepositPage = ({ userId }) => {
+const DepositPage = ({ userId: propUserId }) => {
+  const userId = propUserId || localStorage.getItem("userId");
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState('');
   const [checkNumber, setCheckNumber] = useState('');

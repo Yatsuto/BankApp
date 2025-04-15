@@ -1,32 +1,39 @@
 import { useState } from 'react';
 import { IonIcon } from '@ionic/react';
 import { personOutline, lockClosedOutline } from 'ionicons/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const navigate = useNavigate();
 
   const handleRegister = async () => {
+    const payload = {
+      email,
+      password,
+      first_name: firstName,
+      last_name: lastName
+    };
+
     try {
       const res = await fetch('http://localhost:3000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          password,
-          first_name: firstName,
-          last_name: lastName
-        })
+        body: JSON.stringify(payload)
       });
 
       const data = await res.json();
-      if (res.ok) {
+
+      if (res.ok && data.user && data.user.id) {
         alert('✅ User registered successfully!');
+        localStorage.setItem("userId", data.user.id);
+        navigate("/dashboard");
+
       } else {
-        alert(`❌ Error: ${data.error}`);
+        alert(`❌ Error: ${data.error || 'Invalid response'}`);
       }
     } catch (err) {
       console.error(err);
@@ -36,13 +43,11 @@ const RegisterPage = () => {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
-      {/* Header */}
       <header style={{ textAlign: 'center', paddingTop: '4rem', color: 'white' }}>
         <h1 style={{ fontWeight: 'bold', fontSize: '3rem' }}>DigiBank</h1>
         <p>Your digital banking experience</p>
       </header>
 
-      {/* Register Form */}
       <div style={{
         width: "300px",
         background: "transparent",
@@ -63,53 +68,48 @@ const RegisterPage = () => {
       }}>
         <h2 style={{ marginBottom: '1rem' }}>Registration</h2>
 
-        {/* First Name */}
         <div style={{ width: '100%', marginBottom: '1rem' }}>
-          <input 
-            type="text" 
-            placeholder="First Name" 
+          <input
+            type="text"
+            placeholder="First Name"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            style={inputStyle} 
+            style={inputStyle}
           />
         </div>
 
-        {/* Last Name */}
         <div style={{ width: '100%', marginBottom: '1rem' }}>
-          <input 
-            type="text" 
-            placeholder="Last Name" 
+          <input
+            type="text"
+            placeholder="Last Name"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            style={inputStyle} 
+            style={inputStyle}
           />
         </div>
 
-        {/* Email */}
         <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
-           <IonIcon icon={personOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
-          <input 
-            type="email" 
-            placeholder="Email" 
+          <IonIcon icon={personOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
+          <input
+            type="email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={inputWithIconStyle} 
+            style={inputWithIconStyle}
           />
         </div>
 
-        {/* Password */}
         <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
           <IonIcon icon={lockClosedOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
-          <input 
-            type="password" 
-            placeholder="Password" 
+          <input
+            type="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={inputWithIconStyle} 
+            style={inputWithIconStyle}
           />
         </div>
 
-        {/* Checkbox */}
         <div style={{ width: '100%', fontSize: '0.8rem', marginBottom: '1rem' }}>
           <label style={{ display: 'flex', alignItems: 'center' }}>
             <input type="checkbox" style={{ marginRight: '5px' }} />
@@ -117,12 +117,10 @@ const RegisterPage = () => {
           </label>
         </div>
 
-        {/* Register Button */}
         <button onClick={handleRegister} style={buttonStyle}>Register</button>
 
-        {/* Footer */}
         <div style={{ marginTop: '1rem', fontSize: '0.8rem' }}>
-        Already have an account? <Link to="/" style={{ color: 'white', textDecoration: 'underline' }}>Login</Link>
+          Already have an account? <Link to="/" style={{ color: 'white', textDecoration: 'underline' }}>Login</Link>
         </div>
       </div>
     </div>

@@ -19,6 +19,7 @@ export const getAccounts = async (req, res) => {
       console.log(`ℹ️ No accounts found for user_id: ${userId}`);
     } else {
       console.log(`📦 ${accounts.length} accounts found`);
+      console.log(accounts[0].account_number);
     }
 
     res.status(200).json(accounts);

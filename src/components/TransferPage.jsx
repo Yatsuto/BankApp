@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-const TransferMoney = ({ userId }) => {
+const TransferMoney = ({ userId: propUserId }) => {
+  const userId = propUserId || localStorage.getItem("userId");
+
   const [accounts, setAccounts] = useState([]);
   const [fromAccountId, setFromAccountId] = useState('');
   const [toAccountId, setToAccountId] = useState('');
