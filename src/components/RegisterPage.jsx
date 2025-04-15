@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IonIcon } from '@ionic/react';
-import { personOutline, lockClosedOutline } from 'ionicons/icons';
+import { mailOutline, lockClosedOutline } from 'ionicons/icons';
 import { Link, useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
@@ -100,7 +100,7 @@ const RegisterPage = () => {
         </div>
 
         <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
-          <IonIcon icon={personOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
+        <IonIcon icon={mailOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
           <input
             type="email"
             placeholder="Email"
