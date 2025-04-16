@@ -1,8 +1,20 @@
-# React + Vite
+# DigiBank App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple full-stack digital banking application that allows users to register, log in, manage accounts, deposit and withdraw funds, view transaction history, and transfer money securely.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to Run the Application
+
+> Make sure you have **Node.js** installed.
+
+### 1. Start the Backend Server
+
+```bash
+cd Server
+npm install
+node server.js
+
+Start Front end on different terminal
+npm install
+npm run dev
