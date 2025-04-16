@@ -51,7 +51,7 @@ const BankDashboard = ({ userId: propUserId }) => {
 
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800 text-white relative">
-      {/* Sidebar */}
+    
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-gray-800/80 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           } transition-transform duration-300 z-50 backdrop-blur-md border-r border-white/10`}
@@ -89,9 +89,9 @@ const BankDashboard = ({ userId: propUserId }) => {
         </div>
       </div>
 
-      {/* Content */}
+
       <div className="h-full overflow-y-auto p-6 pb-24">
-        {/* Header */}
+
         <header className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
             <button
@@ -122,7 +122,7 @@ const BankDashboard = ({ userId: propUserId }) => {
         </header>
 
 
-        {/* Account Info */}
+
         <section className="mb-10">
           <h2 className="text-xl mb-4">Your Accounts</h2>
           {loading && <p>Loading accounts...</p>}
@@ -150,7 +150,7 @@ const BankDashboard = ({ userId: propUserId }) => {
           </div>
         </section>
 
-        {/* Manage Accounts */}
+
         <section className="flex flex-col items-center mt-12">
           <div className="border border-white/20 rounded-xl p-6 w-full max-w-md text-center backdrop-blur-md bg-white/5">
             <h2 className="text-xl mb-6 font-semibold text-white">Manage Accounts</h2>

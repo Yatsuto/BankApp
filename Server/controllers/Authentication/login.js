@@ -28,7 +28,7 @@ const login = async (req, res) => {
       });
     }
 
-    // ✅ Send back user ID and optional user info
+
     return res.status(200).json({
       success: true,
       message: "Login Successful",

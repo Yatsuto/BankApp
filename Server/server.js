@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
   res.send('Bank API is running with Sequelize...');
 });
 
-// ✅ Use the modular routes
+
 app.use('/api/accounts', accountRoutes);
 app.use('/api/auth', authRoutes);
 

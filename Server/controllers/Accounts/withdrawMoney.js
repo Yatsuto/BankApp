@@ -15,11 +15,11 @@ export const withdrawFromAccount = async (req, res) => {
       return res.status(400).json({ message: 'Insufficient balance' });
     }
 
-    // Deduct balance
+    
     account.balance = parseFloat(account.balance) - parseFloat(amount);
     await account.save();
 
-    // Log the transaction
+
     await Transaction.create({
       from_account_id: account.id,
       to_account_id: null,
@@ -28,15 +28,14 @@ export const withdrawFromAccount = async (req, res) => {
       timestamp: new Date()
     });
 
-    // Generate one-time-use code
+
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Store OTP in memory (for demo purposes)
-    // In production, you'd want Redis or a DB
+
     global.otps = global.otps || {};
     global.otps[otp] = {
       account_id,
-      expires_at: Date.now() + 5 * 60 * 1000 // 5 min
+      expires_at: Date.now() + 5 * 60 * 1000 
     };
 
     res.json({ otp, expires_at: global.otps[otp].expires_at });

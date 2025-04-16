@@ -8,7 +8,7 @@ import { openAccount } from '../controllers/Accounts/openAccount.js';
 const router = express.Router();
 
 router.get('/:userId', getAccounts);
-router.post('/transfer', transferMoney); // ✅ New route
+router.post('/transfer', transferMoney); 
 router.get('/:accountId/transactions', getTransactionsForAccount);
 router.post('/deposit', depositToAccount);
 router.post('/withdraw', withdrawFromAccount);

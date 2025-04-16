@@ -30,7 +30,7 @@ export const register = async (req, res) => {
       last_name
     });
 
-    // ✅ Return user details including ID
+ 
     return res.status(201).json({
       success: true,
       message: "User registered successfully",

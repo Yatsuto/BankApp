@@ -1,6 +1,5 @@
 import { Account } from "../../models/index.js";
 
-// Helper: Generate a 12-digit unique account number
 const generateUniqueAccountNumber = async () => {
   const digits = '0123456789';
 
@@ -34,7 +33,7 @@ export const openAccount = async (req, res) => {
   try {
     let initial_balance = 0;
 
-    // If a funding account is provided
+
     if (funding_account_number) {
       const fundingAccount = await Account.findOne({
         where: {
@@ -52,13 +51,13 @@ export const openAccount = async (req, res) => {
         return res.status(400).json({ success: false, error: "Insufficient balance to fund new account" });
       }
 
-      // Deduct $100 from funding account
+
       fundingAccount.balance = (balance - 100).toFixed(2);
       await fundingAccount.save();
       initial_balance = 100;
     }
 
-    // Always generate a unique numeric account number
+
     const uniqueNumber = await generateUniqueAccountNumber();
 
     const newAccount = await Account.create({

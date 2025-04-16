@@ -60,7 +60,7 @@ const TransferMoney = ({ userId: propUserId }) => {
     }
   };
 
-  // Filter for "From" dropdown (Checking or Savings)
+
   const eligibleFromAccounts = accounts.filter(acc =>
     ['Checking', 'Savings'].includes(acc.account_type)
   );
