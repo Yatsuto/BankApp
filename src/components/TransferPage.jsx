@@ -1,21 +1,26 @@
+// Import core React hooks
 import React, { useState, useEffect } from 'react';
 
+// Component to transfer funds between user accounts
 const TransferMoney = ({ userId: propUserId }) => {
+  // Use passed userId or fallback to stored value
   const userId = propUserId || localStorage.getItem("userId");
 
+  // State variables to track user accounts and transfer input
   const [accounts, setAccounts] = useState([]);
   const [fromAccountId, setFromAccountId] = useState('');
   const [toAccountId, setToAccountId] = useState('');
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
 
+  // Fetch all user accounts on mount
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/accounts/${userId}`);
         if (!response.ok) throw new Error('Failed to load accounts');
         const data = await response.json();
-        setAccounts(data);
+        setAccounts(data); // Save to local state
       } catch (err) {
         console.error('❌ Error loading accounts:', err);
         alert('Failed to load accounts.');
@@ -25,13 +30,16 @@ const TransferMoney = ({ userId: propUserId }) => {
     if (userId) fetchAccounts();
   }, [userId]);
 
+  // Handle the actual transfer POST request
   const handleTransfer = async () => {
+    // Basic validation
     if (!fromAccountId || !toAccountId || !amount || fromAccountId === toAccountId) {
       alert('Please complete all fields and make sure the accounts are different.');
       return;
     }
 
     try {
+      // Send transfer request to backend
       const response = await fetch('http://localhost:3000/api/accounts/transfer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -49,6 +57,7 @@ const TransferMoney = ({ userId: propUserId }) => {
         throw new Error(errText || 'Transfer failed');
       }
 
+      // Reset form on success
       alert(`Transfer of $${amount} successful!`);
       setAmount('');
       setNote('');
@@ -60,7 +69,7 @@ const TransferMoney = ({ userId: propUserId }) => {
     }
   };
 
-
+  // Only allow Checking or Savings as transfer sources
   const eligibleFromAccounts = accounts.filter(acc =>
     ['Checking', 'Savings'].includes(acc.account_type)
   );
@@ -69,6 +78,7 @@ const TransferMoney = ({ userId: propUserId }) => {
     <div className="max-w-md mx-auto p-6 bg-white/5 backdrop-blur-md rounded-lg text-white border border-white/10 mt-10">
       <h2 className="text-2xl font-semibold mb-6">Transfer Money</h2>
 
+      {/* From Account Selector */}
       <label className="block mb-4">
         <span className="block mb-2">From Account</span>
         <select
@@ -85,6 +95,7 @@ const TransferMoney = ({ userId: propUserId }) => {
         </select>
       </label>
 
+      {/* To Account Selector */}
       <label className="block mb-4">
         <span className="block mb-2">To Account</span>
         <select
@@ -101,6 +112,7 @@ const TransferMoney = ({ userId: propUserId }) => {
         </select>
       </label>
 
+      {/* Amount input */}
       <label className="block mb-4">
         <span className="block mb-2">Amount</span>
         <input
@@ -114,6 +126,7 @@ const TransferMoney = ({ userId: propUserId }) => {
         />
       </label>
 
+      {/* Optional note */}
       <label className="block mb-6">
         <span className="block mb-2">Note (optional)</span>
         <input
@@ -125,6 +138,7 @@ const TransferMoney = ({ userId: propUserId }) => {
         />
       </label>
 
+      {/* Transfer Button */}
       <button
         onClick={handleTransfer}
         className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-2 rounded-lg font-semibold hover:from-green-400 hover:to-green-500 transition-all"

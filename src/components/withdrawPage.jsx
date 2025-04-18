@@ -1,13 +1,19 @@
+// Import core React hooks
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // 👈 For redirection
 
+// Component for handling ATM-style withdrawals
 const WithdrawPage = ({ userId: propUserId }) => {
   const userId = propUserId || localStorage.getItem("userId");
+
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState('');
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
   const [otp, setOtp] = useState(null);
   const [expiresAt, setExpiresAt] = useState(null);
+
+  const navigate = useNavigate(); // 👈 Navigation hook
 
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -37,6 +43,7 @@ const WithdrawPage = ({ userId: propUserId }) => {
       });
 
       if (!res.ok) throw new Error('Withdraw failed');
+
       const { otp, expires_at } = await res.json();
       setOtp(otp);
       setExpiresAt(new Date(expires_at));
@@ -48,8 +55,10 @@ const WithdrawPage = ({ userId: propUserId }) => {
 
   return (
     <div className="p-6 text-white min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+      {/* Page heading */}
       <h1 className="text-2xl font-semibold mb-6">Withdraw Funds</h1>
 
+      {/* Account selection dropdown */}
       <label className="block mb-4">
         <span>Account</span>
         <select
@@ -66,6 +75,7 @@ const WithdrawPage = ({ userId: propUserId }) => {
         </select>
       </label>
 
+      {/* Amount input */}
       <label className="block mb-4">
         <span>Amount</span>
         <input
@@ -77,6 +87,7 @@ const WithdrawPage = ({ userId: propUserId }) => {
         />
       </label>
 
+      {/* Optional note field */}
       <label className="block mb-6">
         <span>Note (optional)</span>
         <input
@@ -87,14 +98,23 @@ const WithdrawPage = ({ userId: propUserId }) => {
         />
       </label>
 
+      {/* Submit withdrawal */}
       <button
         onClick={handleWithdraw}
-        className="w-full bg-blue-600 hover:bg-blue-700 transition text-white font-bold py-2 rounded-lg"
+        className="w-full bg-blue-600 hover:bg-blue-700 transition text-white font-bold py-2 rounded-lg mb-4"
       >
         Withdraw
       </button>
 
-      {/* ✅ OTP Popup */}
+      {/* 🔁 Back to dashboard button */}
+      <button
+        onClick={() => navigate('/dashboard')}
+        className="w-full bg-white/10 hover:bg-white/20 transition text-white font-semibold py-2 rounded-lg"
+      >
+        Back to Dashboard
+      </button>
+
+      {/* ✅ Display OTP if available */}
       {otp && (
         <div className="mt-8 p-6 bg-black/50 border border-white/10 rounded-lg text-center shadow-lg">
           <h2 className="text-xl font-semibold mb-2">One-Time ATM Code</h2>

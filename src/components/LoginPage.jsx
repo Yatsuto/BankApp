@@ -1,17 +1,27 @@
+// Import React and required hooks
 import { useState } from 'react';
 import { IonIcon } from '@ionic/react';
+
+// Import icons for visual feedback
 import { mailOutline, lockClosedOutline } from 'ionicons/icons';
+
+// Import navigation helpers
 import { Link, useNavigate } from 'react-router-dom';
 
+// Login page component
 const LoginPage = () => {
+  // State for user input
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
+  const navigate = useNavigate(); // Hook to navigate programmatically
+
+  // Login handler function triggered on button click
   const handleLogin = async () => {
-    const loginPayload = { email, password };
+    const loginPayload = { email, password }; // Package user input
 
     try {
+      // Send login request to backend
       const res = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -20,15 +30,17 @@ const LoginPage = () => {
 
       const data = await res.json();
 
+      // If login is successful, store user ID and redirect to dashboard
       if (res.ok && data.user && data.user.id) {
         alert("Login successful!");
         localStorage.setItem("userId", data.user.id);
         navigate("/dashboard");
-
       } else {
+        // Show error message from backend if login fails
         alert(`Error: ${data.error || "Invalid login response"}`);
       }
     } catch (err) {
+      // Handle request failure
       console.error(err);
       alert("Failed to login");
     }
@@ -36,11 +48,13 @@ const LoginPage = () => {
 
   return (
     <>
+      {/* Header with brand and slogan */}
       <header style={{ textAlign: 'center', marginTop: '6rem', color: 'white' }}>
         <h1 style={{ fontWeight: 'bold', fontSize: '3rem' }}>DigiBank</h1>
         <p>Your digital banking experience</p>
       </header>
 
+      {/* Login form container */}
       <div style={{
         width: "300px",
         background: "transparent",
@@ -61,8 +75,9 @@ const LoginPage = () => {
       }}>
         <h2 style={{ marginBottom: '1rem' }}>Login</h2>
 
+        {/* Email input field with icon */}
         <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
-        <IonIcon icon={mailOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
+          <IonIcon icon={mailOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
           <input
             type="email"
             placeholder="Email"
@@ -80,6 +95,7 @@ const LoginPage = () => {
           />
         </div>
 
+        {/* Password input field with icon */}
         <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
           <IonIcon icon={lockClosedOutline} style={{ position: 'absolute', top: '15px', right: '15px', color: 'white' }} />
           <input
@@ -99,6 +115,7 @@ const LoginPage = () => {
           />
         </div>
 
+        {/* Remember me and forgot password row */}
         <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '1rem' }}>
           <label style={{ display: 'flex', alignItems: 'center' }}>
             <input type="checkbox" style={{ marginRight: '5px' }} />
@@ -107,6 +124,7 @@ const LoginPage = () => {
           <a href="#" style={{ color: 'white', textDecoration: 'underline' }}>Forgot Password?</a>
         </div>
 
+        {/* Login button */}
         <button
           onClick={handleLogin}
           style={{
@@ -122,6 +140,7 @@ const LoginPage = () => {
           Login
         </button>
 
+        {/* Link to registration page */}
         <div style={{ marginTop: '1rem', fontSize: '0.8rem' }}>
           Don&apos;t have an account? <Link to="/register" style={{ color: 'white', textDecoration: 'underline' }}>Register</Link>
         </div>
